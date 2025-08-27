@@ -1,0 +1,40 @@
+<header class="page-header">
+  <h1>Task Detail</h1>
+</header>
+
+<div class="task-detail-container">
+  <h2>Detail Page</h2>
+
+  <!-- Yükleme / hata durumu -->
+  <div *ngIf="!task && !errorMessage">
+    Loading task details...
+  </div>
+
+  <div *ngIf="errorMessage">
+    <p class="error">{{ errorMessage }}</p>
+  </div>
+
+  <!-- Local fallback notice -->
+  <div *ngIf="isFallback" class="error">
+    This task was created locally and not found on the server. Details are shown locally.
+  </div>
+
+  <!-- Görev detayları -->
+  <div *ngIf="task" class="task-card">
+    <p><strong>ID:</strong> {{ task.id }}</p>
+    <p><strong>title:</strong> {{ task.title }}</p>
+    <p>
+      <strong>State:</strong>
+      <span [ngClass]="{ 'completed': task.completed, 'pending': !task.completed }">
+        {{ task.completed ? 'Completed ✅' : 'Pending ⏳' }}
+      </span>
+    </p>
+  </div>
+
+  <!-- Listeye geri dön -->
+  <a routerLink="/tasks" class="back-link">← Return to task list</a>
+</div>
+
+<footer class="page-footer">
+  <p>Task Manager</p>
+</footer>

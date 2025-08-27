@@ -1,0 +1,59 @@
+<header class="page-header">
+  <h1>Task Manager</h1>
+  <img src="/assets/pictures/arkaplansiz.png" alt="Task Manager Logo" class="logo" />
+</header>
+
+<div class="task-list-container">
+  <h2>TASK LIST</h2>
+
+  <!-- ADD FORM -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="add-form">
+    <label for="title">Title</label>
+    <input id="title" formControlName="title" placeholder="Enter new task..." />
+
+    <div *ngIf="form.get('title')?.touched && form.get('title')?.invalid" class="error">
+      <div *ngIf="form.get('title')?.errors?.['required']"><span>Title is required.</span></div>
+      <div *ngIf="form.get('title')?.errors?.['minlength']"><span>Title must be at least 3 characters long.</span></div>
+    </div>
+
+    <label>
+      <input type="checkbox" formControlName="completed" />
+      Completed
+    </label>
+
+  <button type="submit" [disabled]="form.invalid">Add</button>
+  </form>
+
+  <hr />
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-state">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="tasks.length === 0 && !errorMessage" class="loading">Loading tasks...</div>
+
+  <!-- Görev Listesi -->
+  <ul *ngIf="tasks.length > 0" class="task-list">
+    <li *ngFor="let task of tasks; trackBy: trackById" class="task-item" [class.completed]="task.completed">
+      <div class="task-content">
+        <div class="task-header">
+          <span class="task-id">#{{ task.id }}</span>
+          <span class="status-badge" 
+                [class.status-completed]="task.completed">
+            {{ task.completed ? 'COMPLETED' : 'PENDING' }}
+          </span>
+        </div>
+  <p class="task-title">{{ task.title }}</p>
+      </div>
+  <a class="back-link" [routerLink]="['/tasks', task['id']]" style="text-decoration: none;">Detail</a>
+  <button class="delete-btn" (click)="onDelete(task['id'])">Delete</button>
+    </li>
+  </ul>
+</div>
+
+<footer class="page-footer">
+  <h1>Task Manager</h1>
+  <nav class="footer-nav"></nav>
+</footer>
